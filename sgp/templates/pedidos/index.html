@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block header %}
+    {% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container " style="padding-top: 64px;">
+    <form class="d-flex d" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-primary" type="submit" style="margin-right: 16px;">Buscar</button>
+        <a class="btn btn-success" href="{{ url_for('pedidos.pedidos_criar') }}"  style="margin-right: 16px;">Criar</a>
+        <p></p>
+        <button class="btn btn-warning" style="margin-right: 16px;" >Filtrar</button>
+    </form>
+</div>
+    <div class="container" style="padding-top: 64px;">
+        <table class="table">
+            <thead>
+            {% for title in titles %}
+                <th>{{title}}</th>
+            {% endfor %}
+                
+            </thead>
+            <tbody>
+            {% for pedido in data %}
+            <tr id="{{pedido.get('id')}}">
+                {% for value in pedido.values() %}
+                <td>{{value}}</td>
+            
+                {% endfor %}
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

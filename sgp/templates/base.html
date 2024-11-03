@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    {% block head %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    {% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dropzone.css') }}">
+    <!-- Bootstrap CSS -->
+    {{ bootstrap.load_css() }} {% endblock %}
+
+    <title>Your page title</title>
+    {% endblock %}
+  </head>
+  <body>
+    {% block header %}{% endblock %}
+
+    <!-- Your page content -->
+    {% block content %}{% endblock %} {% block scripts %}
+    <script src="{{ url_for('static', filename='js/dropzone.js') }}"></script>
+    {{ bootstrap.load_js() }} {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,157 @@
+{% extends 'base.html' %} {% block header %} {% include 'header.html' %} {%
+endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
+{% block content %}
+<!-- Cabeçalho ficha -->
+<div class="container">
+  <div class="row">
+    <div class="col col-2">{{ render_field(form_top.idd) }}</div>
+    <div class="col">{{ render_field(form_top.name_client) }}</div>
+    <div class="row">
+      <div class="col">{{ render_field(form_top.data_entrada) }}</div>
+      <div class="col">{{ render_field(form_top.data_envio) }}</div>
+      <div class="col">{{ render_field(form_top.forma_de_envio) }}</div>
+    </div>
+    <div class="row">
+      <div class="col">
+        {{ render_field(form_top.observacao, placeholder="Insira alguma
+        observação de entrega") }}
+      </div>
+    </div>
+    <hr />
+  </div>
+</div>
+<!-- Fim do cabeçalho -->
+<div class="container">
+  <div class="row">
+    <div class="col">
+      {{ render_field(form_produto.opcoes, id="choicesPedido") }}
+    </div>
+  </div>
+</div>
+<!-- Fim do tipo de material -->
+<!-- Painel -->
+
+<div class="container hidden" id="containerFormPainel">
+  <div class="row">
+    <div class="col">{{ render_field(form_painel.descricao) }}</div>
+    <div class="col">
+      {{ render_field(form_painel.tamanho, placeholder="Largura, Altura") }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      {{ render_field(form_painel.tipo_tecido) }} {{
+      render_field(form_painel.overloque) }} {{
+      render_field(form_painel.elastico) }} {{ render_field(form_painel.bainha)
+      }}
+    </div>
+    <div class="col">
+        <div id="dropzone">Cole ou arraste a imagem aqui</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">{{ render_field(form_painel.value) }}</div>
+    <div class="col">
+      {{ render_field(form_painel.observacao,placeholder="Alguma adicional sobre
+      esse painel") }}
+    </div>
+  </div>
+  <div class="row">{{ render_field(form_painel.adicionar) }}</div>
+</div>
+<!-- FIm do painel-->
+
+<div class="container hidden" id="containerFormTotem">
+  <div class="row">
+    <div class="col">{{ render_field(form_totem.descricao) }}</div>
+    <div class="col">
+      {{ render_field(form_totem.tamanho, placeholder="Largura, Altura") }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      {{ render_field(form_totem.espessura_totem) }} {{
+      render_field(form_totem.com_p_or_sem) }}
+    </div>
+    <div class="col">{{ render_field(form_totem.imagem_ficha) }}</div>
+  </div>
+  <div class="row">
+    <div class="col">{{ render_field(form_totem.value) }}</div>
+    <div class="col">
+      {{ render_field(form_totem.observacao,placeholder="Alguma adicional sobre
+      esse Totem ?") }}
+    </div>
+  </div>
+  <div class="row">{{ render_field(form_totem.adicionar) }}</div>
+</div>
+
+{% endblock %} {% block scripts %}
+<script>
+  const opcoesProdutos = document.getElementById("opcoes");
+
+  document.addEventListener("change", (e) => {
+    let typePedido = document.querySelector("#choicesPedido");
+    let checkedChoice = typePedido.options[typePedido.selectedIndex].value;
+    let formPainel = document.querySelector("#containerFormPainel");
+    let formTotem = document.querySelector("#containerFormTotem");
+    switch (checkedChoice) {
+      case "painel":
+        formPainel.classList.remove("hidden");
+        formTotem.classList.add("hidden");
+        break;
+    case "totem":
+        formTotem.classList.remove("hidden");
+        formPainel.classList.add("hidden");
+        break
+    default:
+        formPainel.classList.add("hidden")
+        formTotem.classList.add("hidden")
+        break;
+    }
+  });
+  const dropzone = document.getElementById("dropzone");
+
+// Para colar a imagem
+document.addEventListener("paste", (event) => {
+  const items = event.clipboardData.items;
+  for (const item of items) {
+    if (item.type.indexOf("image") !== -1) {
+      const file = item.getAsFile();
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = document.createElement("img");
+        img.setAttribute("id", "imagemFicha");
+        img.src = event.target.result;
+        dropzone.innerHTML = ""; // Limpa a área para a nova imagem
+        dropzone.appendChild(img); // Mostra a imagem
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+});
+
+// Para arrastar e soltar a imagem
+dropzone.addEventListener("dragover", (event) => {
+  event.preventDefault(); // Necessário para permitir o "drop"
+  dropzone.style.borderColor = "#00cc00"; // Mudar a cor da borda ao arrastar
+});
+
+dropzone.addEventListener("dragleave", () => {
+  dropzone.style.borderColor = "#cccccc"; // Voltar à cor original
+});
+
+dropzone.addEventListener("drop", (event) => {
+  event.preventDefault();
+  const file = event.dataTransfer.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = document.createElement("img");
+      img.src = event.target.result;
+      dropzone.innerHTML = ""; // Limpa a área para a nova imagem
+      dropzone.appendChild(img); // Mostra a imagem
+    };
+    reader.readAsDataURL(file);
+  }
+});
+</script>
+{{ bootstrap.load_js() }} {% endblock %}

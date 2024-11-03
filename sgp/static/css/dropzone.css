@@ -1,0 +1,19 @@
+.hidden {
+  display: none;
+}
+#dropzone {
+  width: 300px;
+  height: 300px;
+  border: 2px dashed #cccccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  color: #cccccc;
+  margin-top: 20px;
+  cursor: pointer;
+}
+#dropzone img {
+  max-width: 100%;
+  max-height: 100%;
+}
