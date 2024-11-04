@@ -75,7 +75,7 @@ endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
     <div class="col">{{ render_field(form_totem.imagem_ficha) }}</div>
   </div>
   <div class="row">
-    <div class="col">{{ render_field(form_totem.value) }}</div>
+    <div class="col">{{ render_field(form_totem.value,step="0.01") }}</div>
     <div class="col">
       {{ render_field(form_totem.observacao,placeholder="Alguma adicional sobre
       esse Totem ?") }}
