@@ -1,1 +1,3 @@
 .venv
+
+sgp/__pycache__/*.pyc*
