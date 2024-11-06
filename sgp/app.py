@@ -1,13 +1,12 @@
 from flask import Flask, render_template, redirect, url_for,Blueprint
 from flask_bootstrap import Bootstrap5
 from form import LoginForm
-
 from flask_wtf import CSRFProtect
-
-
-# Blueprints
 from pedidos import pedidos
+from dotenv import load_dotenv
+from os import getenv
 
+load_dotenv(".env")
 app = Flask(__name__)
 app.secret_key = 'mateus_top'
 app.register_blueprint(pedidos.bp_pedidos)
@@ -17,25 +16,27 @@ bootstrap = Bootstrap5(app)
 csrf = CSRFProtect(app)
 
 
-names = ["Mateus jose","Breno Polezi","mateus"]
 
+@app.route("/")
 @app.route("/home")
 def home():
-    return render_template("login/home.html")
+    return render_template("index.html")
 
 
-@app.route("/",methods=["GET","POST"])
-def index():
+
+@app.route("/login",methods=["GET","POST"])
+def login():
     form = LoginForm()
     message = ''
     if form.validate_on_submit():
-        if form.name.data in names:
-            return redirect(url_for('home'))
+        user,password = getenv("ADMIN"),getenv("PASSWORD")
+        if form.name_user.data != user and form.password_user.data != password:
+            return render_template("login/index.html",form=form,message="Login invalido",flag_error=True)
         else:
-            message= "Informações incorretas tente novamente"
-            return render_template("login/index.html",form=form,message=message)
-        
-    return render_template("login/index.html",form=form)
+            return redirect(url_for('home'))
+               
+    return render_template("login/index.html",form=form,flag_error=False)
+
 
 
 if __name__ == "__main__":
