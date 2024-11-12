@@ -1,8 +1,6 @@
-from flask import Blueprint,render_template
+from flask import Blueprint,render_template,request,redirect,url_for
 from .form import PainelForm,TipoDeProdutoForm,FichaPedido,TotemForm
-
 bp_pedidos = Blueprint('pedidos',__name__)
-
 
 
 data_pedidos = [
@@ -17,16 +15,20 @@ def pedidos():
     return render_template("pedidos/index.html",data=data_pedidos,titles=titles)
 
 
-@bp_pedidos.route("/pedidos/criar")
+@bp_pedidos.route("/pedidos/criar",methods=["GET","POST"])
 def pedidos_criar():
     form_top = FichaPedido(idd='1')
     form_produto = TipoDeProdutoForm()
     form_painel = PainelForm()
     form_totem = TotemForm()
-    return render_template(
-        "pedidos/criar.html",form_top=form_top,form_produto=form_produto
-        ,form_painel=form_painel,form_totem=form_totem
-        )
+    if request.method == "GET":
+        print(form_top.idd.data)
+        
+        return render_template(
+            "pedidos/criar.html",form_top=form_top,form_produto=form_produto
+            ,form_painel=form_painel,form_totem=form_totem,form=form_top
+            )
     
-    # return render_template("pedidos/criar.html",form_top=form_top,form=produto,sub_form=sub_form)
-    
+    if request.method == "POST":
+        print(form_top.idd.data)
+            

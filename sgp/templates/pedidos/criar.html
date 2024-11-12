@@ -3,22 +3,31 @@ endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
 {% block content %}
 <!-- Cabeçalho ficha -->
 <div class="container">
-  <div class="row">
-    <div class="col col-2">{{ render_field(form_top.idd) }}</div>
-    <div class="col">{{ render_field(form_top.name_client) }}</div>
-    <div class="row">
-      <div class="col">{{ render_field(form_top.data_entrada) }}</div>
-      <div class="col">{{ render_field(form_top.data_envio) }}</div>
-      <div class="col">{{ render_field(form_top.forma_de_envio) }}</div>
-    </div>
-    <div class="row">
-      <div class="col">
-        {{ render_field(form_top.observacao, placeholder="Insira alguma
-        observação de entrega") }}
+  <form action="{{ url_for('pedidos_criar') }}" method="post">
+  \  <div class="row">
+      <div class="col col-2">{{ render_field(form_top.idd) }}</div>
+      <div class="col">{{ render_field(form_top.name_client) }}</div>
+      <div class="row">
+        <div class="col">{{ render_field(form_top.data_entrada) }}</div>
+        <div class="col">{{ render_field(form_top.data_envio) }}</div>
+        <div class="col">{{ render_field(form_top.forma_de_envio) }}</div>
       </div>
+      <div class="row">
+        <div class="col">
+          {{ render_field(form_top.observacao, placeholder="Insira algum
+          observação sobre a entrega") }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          {{ form_top.csrf_token}} {{ render_field(form_top.btn_save) }}
+        </div>
+      </div>
+      <br />
+      <br />
+      <hr />
     </div>
-    <hr />
-  </div>
+  </form>
 </div>
 <!-- Fim do cabeçalho -->
 <div class="container">
@@ -46,7 +55,7 @@ endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
       }}
     </div>
     <div class="col">
-        <div id="dropzone">Cole ou arraste a imagem aqui</div>
+      <div id="dropzone">Cole ou arraste a imagem aqui</div>
     </div>
   </div>
   <div class="row">
@@ -98,60 +107,60 @@ endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
         formPainel.classList.remove("hidden");
         formTotem.classList.add("hidden");
         break;
-    case "totem":
+      case "totem":
         formTotem.classList.remove("hidden");
         formPainel.classList.add("hidden");
-        break
-    default:
-        formPainel.classList.add("hidden")
-        formTotem.classList.add("hidden")
+        break;
+      default:
+        formPainel.classList.add("hidden");
+        formTotem.classList.add("hidden");
         break;
     }
   });
   const dropzone = document.getElementById("dropzone");
 
-// Para colar a imagem
-document.addEventListener("paste", (event) => {
-  const items = event.clipboardData.items;
-  for (const item of items) {
-    if (item.type.indexOf("image") !== -1) {
-      const file = item.getAsFile();
+  // Para colar a imagem
+  document.addEventListener("paste", (event) => {
+    const items = event.clipboardData.items;
+    for (const item of items) {
+      if (item.type.indexOf("image") !== -1) {
+        const file = item.getAsFile();
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = document.createElement("img");
+          img.setAttribute("id", "imagemFicha");
+          img.src = event.target.result;
+          dropzone.innerHTML = ""; // Limpa a área para a nova imagem
+          dropzone.appendChild(img); // Mostra a imagem
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  });
+
+  // Para arrastar e soltar a imagem
+  dropzone.addEventListener("dragover", (event) => {
+    event.preventDefault(); // Necessário para permitir o "drop"
+    dropzone.style.borderColor = "#00cc00"; // Mudar a cor da borda ao arrastar
+  });
+
+  dropzone.addEventListener("dragleave", () => {
+    dropzone.style.borderColor = "#cccccc"; // Voltar à cor original
+  });
+
+  dropzone.addEventListener("drop", (event) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const img = document.createElement("img");
-        img.setAttribute("id", "imagemFicha");
         img.src = event.target.result;
         dropzone.innerHTML = ""; // Limpa a área para a nova imagem
         dropzone.appendChild(img); // Mostra a imagem
       };
       reader.readAsDataURL(file);
     }
-  }
-});
-
-// Para arrastar e soltar a imagem
-dropzone.addEventListener("dragover", (event) => {
-  event.preventDefault(); // Necessário para permitir o "drop"
-  dropzone.style.borderColor = "#00cc00"; // Mudar a cor da borda ao arrastar
-});
-
-dropzone.addEventListener("dragleave", () => {
-  dropzone.style.borderColor = "#cccccc"; // Voltar à cor original
-});
-
-dropzone.addEventListener("drop", (event) => {
-  event.preventDefault();
-  const file = event.dataTransfer.files[0];
-  if (file && file.type.startsWith("image/")) {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = document.createElement("img");
-      img.src = event.target.result;
-      dropzone.innerHTML = ""; // Limpa a área para a nova imagem
-      dropzone.appendChild(img); // Mostra a imagem
-    };
-    reader.readAsDataURL(file);
-  }
-});
+  });
 </script>
 {{ bootstrap.load_js() }} {% endblock %}
