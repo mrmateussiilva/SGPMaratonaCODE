@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import DecimalField,StringField,DateField,SubmitField,SelectField,IntegerField,FileField,BooleanField,FloatField,RadioField
+from wtforms import DecimalField,StringField,DateField,SubmitField,SelectField,IntegerField,FileField,BooleanField,RadioField
 from wtforms.validators import ReadOnly
 
 
@@ -33,6 +33,7 @@ class FichaPedido(FlaskForm):
     data_envio = DateField(label="Data de envio")
     forma_de_envio = SelectField("Selecione a forma de envio",choices=choices_envio)
     observacao = StringField("")
+    btn_save = SubmitField("Salvar",)
 
 
 
@@ -59,7 +60,7 @@ class PainelForm(FlaskForm):
     tamanho = StringField("Tamanho do Painel")
     imagem_ficha = FileField()
     value = DecimalField("Valor do Painel")
-    observacao = StringField("Observção")
+    observacao = StringField("Observação")
 
     # Costura
     tipo_tecido = SelectField(label="Tipo de tecido",choices=choices_tecido)

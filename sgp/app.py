@@ -1,20 +1,12 @@
-from flask import Flask, render_template, redirect, url_for,Blueprint
+from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap5
-from form import LoginForm
 from flask_wtf import CSRFProtect
-from pedidos import pedidos
-from dotenv import load_dotenv
-from os import getenv
+from form import PainelForm,TipoDeProdutoForm,FichaPedido,TotemForm
 
-load_dotenv(".env")
 app = Flask(__name__)
-app.secret_key = 'mateus_top'
-app.register_blueprint(pedidos.bp_pedidos)
-
+app.secret_key = b'mateus jose da silva'
 bootstrap = Bootstrap5(app)
-# app.config['BOOTSTRAP_BOOTSWATCH_THEME'] = 'materia'
 csrf = CSRFProtect(app)
-
 
 
 @app.route("/")
@@ -23,19 +15,42 @@ def home():
     return render_template("index.html")
 
 
+data_pedidos = [
+    {"id":'1','descricao':'Painel Redondo BATMAN','value':'90,00','date_envio':'03/11/2024',"forma_envio":'SEDEX'},
+    {"id":'2','descricao':'Painel Redondo BATMAN','value':'90,00','date_envio':'03/11/2024',"forma_envio":'SEDEX'},
+    {"id":'3','descricao':'Painel Redondo BATMAN','value':'90,00','date_envio':'03/11/2024',"forma_envio":'SEDEX'},
+]
 
-@app.route("/login",methods=["GET","POST"])
-def login():
-    form = LoginForm()
-    message = ''
-    if form.validate_on_submit():
-        user,password = getenv("ADMIN"),getenv("PASSWORD")
-        if form.name_user.data != user and form.password_user.data != password:
-            return render_template("login/index.html",form=form,message="Login invalido",flag_error=True)
+@app.route("/pedidos")
+def pedidos():
+    titles = tuple(map(lambda t: t.replace('_'," ").title(),data_pedidos[0].keys()))
+    return render_template("pedidos/index.html",data=data_pedidos,titles=titles)
+
+
+@app.route("/pedidos/criar",methods=["GET","POST"])
+def pedidos_criar():
+    form_top = FichaPedido(idd='1')
+    form_produto = TipoDeProdutoForm()
+    form_painel = PainelForm()
+    form_totem = TotemForm()
+    if request.method == "GET":
+        # print(form_top.csrf_token)
+        
+        return render_template(
+            "pedidos/criar.html",form_top=form_top,form_produto=form_produto
+            ,form_painel=form_painel,form_totem=form_totem
+            )
+    
+    if request.method == "POST":
+        # return f"{request.form}"
+        if form_top.validate_on_submit():
+            return f"{form_top}"
         else:
-            return redirect(url_for('home'))
-               
-    return render_template("login/index.html",form=form,flag_error=False)
+            return f"{request.form}"
+
+
+
+
 
 
 
