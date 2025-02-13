@@ -6,31 +6,26 @@
 
 {% block content %}
 <div class="container">
-  <h1>Pedidos Abertos</h1>
+  <h1>Pedidos Em Abertos</h1>
 </div>
-<div class="cotainer">
-  <table class="table">
-    <thead>
-      <th>Id</th>
-      <th>Cliente</th>
-      <th>Data de Envio</th>
-      <th>Forma de Envio</th>
-      <th>Ações</th>
-    </thead>
-    <tbody>
-      {% for pedido in pedidos %}
-      <tr>
-        <td>{{pedido['idd']}}</td>
-        <td>{{pedido['name_client']}}</td>
-        <td>{{pedido['data_envio']}}</td>
-        <td>{{pedido['forma_de_envio']}}</td>
-        <td>
-          <a href="#">Editar</a>
-          <a href="#">Excluir</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="container">
+  <div class="accordion" id="accordionExample">
+    {% for pedido in pedidos %}
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{pedido['idd']}}" aria-expanded="true" aria-controls="collapseOne">
+          {{pedido['idd']}}
+        </button>
+      </h2>
+      <div id="{{pedido['idd']}}" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    
+  
 </div>
 {% endblock %}
