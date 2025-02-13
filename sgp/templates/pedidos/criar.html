@@ -12,7 +12,7 @@ endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
 {% endif %}
 {% endwith %}
 <div class="container">
-  <form action="{{ url_for('pedidos_criar') }}" method="post">
+  <form action="{{ url_for('pedidos.criar') }}" method="post">
   <div class="row">
       <div class="col col-2">{{ render_field(form_top.idd) }}</div>
       <div class="col">{{ render_field(form_top.name_client) }}</div>
