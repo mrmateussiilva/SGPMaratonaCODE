@@ -1,5 +1,8 @@
 .venv
 
+
+sgp/pedidos.json
+
 sgp/__pycache__
 sgp/pedidos/__pycache__/*.pyc
 # Byte-compiled / optimized / DLL files
