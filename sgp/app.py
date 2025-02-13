@@ -23,9 +23,7 @@ def pedidos_criar():
     form_produto = TipoDeProdutoForm()
     form_painel = PainelForm()
     form_totem = TotemForm()
-    if request.method == "GET":
-        # print(form_top.csrf_token)
-        
+    if request.method == "GET":        
         return render_template(
             "pedidos/criar.html",form_top=form_top,form_produto=form_produto
             ,form_painel=form_painel,form_totem=form_totem
@@ -38,16 +36,6 @@ def pedidos_criar():
         else:
             flash("Error ao criar pedido","error")
             return redirect('/home')
-            
-            # return redirect(url_for('pedidos','criar'))
-
-""" 
-
-'idd', '1'), ('name_client', 'Matesu'), ('data_entrada', '2025-01-29'), ('data_envio', '2025-02-05'), ('forma_de_envio', 'pac'), ('observacao', ''), ('csrf_token', 'ImE2YzFjMDRkZmQ3NDhkN2IzMDY1MTllOGMxODgzNGY0NjAyZTExZGQi.Z6vkag.vhc2PExdgItq132lLmNf_biYjoE'), ('btn_save', 'Salvar')
-
-
- """
-
-
+        
 if __name__ == "__main__":
     app.run(debug=True)
