@@ -1,31 +1,10 @@
 {% extends 'base.html' %}
 
-{% block header %}
-{% include 'header.html' %}
-{% endblock %}
 
 {% block content %}
 <div class="container">
   <h1>Pedidos Em Abertos</h1>
 </div>
-<div class="container">
-  <div class="accordion" id="accordionExample">
-    {% for pedido in pedidos %}
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{pedido['idd']}}" aria-expanded="true" aria-controls="collapseOne">
-          {{pedido['idd']}}
-        </button>
-      </h2>
-      <div id="{{pedido['idd']}}" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-          
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-
-    
   
 </div>
 {% endblock %}

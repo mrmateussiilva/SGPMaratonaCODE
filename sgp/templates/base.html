@@ -18,11 +18,13 @@
 
   </head>
   <body>
-    {% block header %}{% endblock %}
+    {% block header %}
+    {% include 'header.html' %}
+    {% endblock %}
 
-    <!-- Your page content -->
-    {% block content %}{% endblock %} {% block scripts %}
-    <script src="{{ url_for('static', filename='js/dropzone.js') }}"></script>
-    {{ bootstrap.load_js() }} {% endblock %}
+      {% block content %}{% endblock %} {% block scripts %}
+
+      <script src="{{ url_for('static', filename='js/dropzone.js') }}"></script>
+      {{ bootstrap.load_js() }} {% endblock %}
   </body>
 </html>

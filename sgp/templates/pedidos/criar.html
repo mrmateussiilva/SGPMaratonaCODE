@@ -1,43 +1,50 @@
-{% extends 'base.html' %} {% block header %} {% include 'header.html' %} {%
-endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
+{% extends 'base.html' %}
+
+
+{% from 'bootstrap5/form.html' import render_form, render_field %}
 {% block content %}
-<!-- Cabeçalho ficha -->
-{% with messages = get_flashed_messages() %}
+<!-- Área para exibir as mensagens flash -->
+{% with messages = get_flashed_messages(with_categories=True) %}
 {% if messages %}
-  <ul class=flashes>
-  {% for message in messages %}
-    <li>{{ message }}</li>
-  {% endfor %}
-  </ul>
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} mt-3" role="alert" id="flash-message">
+  {{ message }}
+</div>
+{% endfor %}
 {% endif %}
 {% endwith %}
+
+
+
+<!-- Cabeçalho ficha -->
+
 <div class="container">
   <form action="{{ url_for('pedidos.criar') }}" method="post">
   <div class="row">
-      <div class="col col-2">{{ render_field(form_top.idd) }}</div>
-      <div class="col">{{ render_field(form_top.name_client) }}</div>
-      <div class="row">
-        <div class="col">{{ render_field(form_top.data_entrada) }}</div>
-        <div class="col">{{ render_field(form_top.data_envio) }}</div>
-        <div class="col">{{ render_field(form_top.forma_de_envio) }}</div>
-      </div>
-      <div class="row">
-        <div class="col">
-          {{ render_field(form_top.observacao, placeholder="Insira algum
-          observação sobre a entrega") }}
+    
+    <div class="col-sm-8">
+        <div class="row">
+          <div class="col col-2">{{ render_field(form_top.idd) }}</div>
+          <div class="col">{{ render_field(form_top.name_client) }}</div>
+          <div class="row">
+            <div class="col">{{ render_field(form_top.data_entrada) }}</div>
+            <div class="col">{{ render_field(form_top.data_envio) }}</div>
+            <div class="col">{{ render_field(form_top.forma_de_envio) }}</div>
+          </div>
+          <div class="row">
+            <div class="col">
+              {{ render_field(form_top.observacao, placeholder="observação") }}
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          {{ form_top.csrf_token}} {{ render_field(form_top.btn_save) }}
-        </div>
+      <div class="col">
+        {{ form_top.csrf_token}} {{ render_field(form_top.btn_save) }}
       </div>
-      <br />
-      <br />
-      <hr />
     </div>
   </form>
 </div>
+
 <!-- Fim do cabeçalho -->
 <div class="container">
   <div class="row">
@@ -48,7 +55,7 @@ endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
 </div>
 <!-- Fim do tipo de material -->
 <!-- Painel -->
-
+{#
 <div class="container hidden" id="containerFormPainel">
   <div class="row">
     <div class="col">{{ render_field(form_painel.descricao) }}</div>
@@ -74,7 +81,7 @@ endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
       esse painel") }}
     </div>
   </div>
-  <div class="row">{{ render_field(form_painel.adicionar) }}</div>
+  <div class="row" onclick="empilharPainel()">{{ render_field(form_painel.adicionar) }}</div>
 </div>
 <!-- FIm do painel-->
 
@@ -101,9 +108,20 @@ endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
   </div>
   <div class="row">{{ render_field(form_totem.adicionar) }}</div>
 </div>
-
+#}
 {% endblock %} {% block scripts %}
+
+
 <script>
+  setTimeout(function () {
+    var flashMessage = document.getElementById('flash-message');
+    if (flashMessage) {
+      flashMessage.style.transition = 'opacity 0.5s ease';
+      flashMessage.style.opacity = '0';
+      setTimeout(() => flashMessage.remove(), 500);
+    }
+  }, 3000);  // 3000 milissegundos = 3 segundos
+
   const opcoesProdutos = document.getElementById("opcoes");
 
   document.addEventListener("change", (e) => {
@@ -171,5 +189,11 @@ endblock %} {% from 'bootstrap5/form.html' import render_form, render_field %}
       reader.readAsDataURL(file);
     }
   });
+  function empilharPainel() {
+    let container = document.querySelector("#containerFormPainel");
+    console.log(container)
+    alert("Empilhando")
+  }
+
 </script>
 {{ bootstrap.load_js() }} {% endblock %}
