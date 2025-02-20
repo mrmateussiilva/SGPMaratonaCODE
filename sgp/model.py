@@ -6,8 +6,11 @@ db = TinyDB("pedidos.json")
 
 def inserDB(data:dict) -> bool:
     TinyDB.default_table_name = "pedidos"
-    db.insert(data)
-
+    if len(data) > 0:
+        insert = db.insert(data)
+    else:
+        insert = None
+    return True if isinstance(insert,int) else False
 
 def get_all_pedidosDB() -> dict:
     TinyDB.default_table_name = "pedidos"

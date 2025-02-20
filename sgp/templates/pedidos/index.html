@@ -1,47 +1,45 @@
 {% extends 'base.html' %}
-{% block header %}
-    {% include 'header.html' %}
-{% endblock %}
+
 
 
 {% block content %}
 <div class="container " style="padding-top: 64px;">
-    <form class="d-flex d" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-primary" type="submit" style="margin-right: 16px;">Buscar</button>
-        <a class="btn btn-success" href="{{ url_for('pedidos.criar') }}"  style="margin-right: 16px;">Criar</a>
-        <p></p>
-        <button class="btn btn-warning" style="margin-right: 16px;" >Filtrar</button>
-    </form>
+  <form class="d-flex d" role="search">
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-primary" type="submit" style="margin-right: 16px;">Buscar</button>
+    <a class="btn btn-success" href="{{ url_for('pedidos.criar') }}" style="margin-right: 16px;">Criar</a>
+    <p></p>
+    <button class="btn btn-warning" style="margin-right: 16px;">Filtrar</button>
+  </form>
 </div>
 
 
 <div class="container">
-  </div>
-  <div class="container-md">
-    <table class="table">
-      <thead>
-        <th>Id</th>
-        <th>Cliente</th>
-        <th>Data de Envio</th>
-        <th>Forma de Envio</th>
-        <th>Ações</th>
-      </thead>
-      <tbody>
-        {% for pedido in pedidos %}
-        <tr>
-          <td>{{pedido['idd']}}</td>
-          <td>{{pedido['name_client']}}</td>
-          <td>{{pedido['data_envio']}}</td>
-          <td>{{pedido['forma_de_envio']}}</td>
-          <td>
-            <a href="#">Editar</a>
-            <a href="#">Excluir</a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+</div>
+<div class="container-md">
+  <table class="table">
+    <thead>
+      <th>Id</th>
+      <th>Cliente</th>
+      <th>Data de Envio</th>
+      <th>Forma de Envio</th>
+      <th>Ações</th>
+    </thead>
+    <tbody>
+      {% for pedido in pedidos %}
+      <tr>
+        <td>{{pedido['idd']}}</td>
+        <td>{{pedido['name_client']}}</td>
+        <td>{{pedido['data_envio']}}</td>
+        <td>{{pedido['forma_de_envio']}}</td>
+        <td>
+          <a href="#">Editar</a>
+          <a href="#">Excluir</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

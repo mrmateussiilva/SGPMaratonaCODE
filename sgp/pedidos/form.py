@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import DecimalField,StringField,DateField,SubmitField,SelectField,IntegerField,FileField,BooleanField,RadioField
-from wtforms.validators import ReadOnly
-
+from wtforms.validators import ReadOnly,DataRequired
+import wtforms
 
 
 choices_envio = [
@@ -24,14 +24,15 @@ choices_produtos = [
     (' ',' '),
     ('painel','Painel'),
     ('totem','Totem'),
+    ('adesivo','Adesivo'),
 ]
 
 class FichaPedido(FlaskForm):
     idd = IntegerField("Número do Pedido",validators=[ReadOnly()])
-    name_client = SelectField("Nome do cliente",choices=choices_client)
-    data_entrada = DateField(label="Data de Entrada")
-    data_envio = DateField(label="Data de envio")
-    forma_de_envio = SelectField("Selecione a forma de envio",choices=choices_envio)
+    name_client = SelectField("Nome do cliente",choices=choices_client, validators=[DataRequired()])
+    data_entrada = DateField(label="Data de Entrada", validators=[DataRequired()])
+    data_envio = DateField(label="Data de envio", validators=[DataRequired()])
+    forma_de_envio = SelectField("Selecione a forma de envio",choices=choices_envio, validators=[DataRequired()])
     observacao = StringField("")
     btn_save = SubmitField("Salvar",)
 
